@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package mes;
+
+// Option này rất quan trọng cho tầng Go sau này
+option go_package = "github.com/devil/wmss/contracts/mes;mes";
+
+// Dịch vụ Pathfinding (Tìm đường)
+service PathfindingService {
+  // Định nghĩa một hàm có thể gọi từ xa (RPC - Remote Procedure Call)
+  rpc CalculatePath (PathRequest) returns (PathResponse);
+}
+
+// Cấu trúc dữ liệu Tọa độ cơ bản
+message Point {
+  int32 x = 1;
+  int32 y = 2;
+}
+
+// Request: Những gì Node.js sẽ gửi cho Python
+message PathRequest {
+  string warehouse_id = 1; // Để Python biết lấy bản đồ kho nào từ Redis
+  Point start = 2;         // Điểm hiện tại của AGV
+  Point end = 3;           // Điểm đến (Docks, Charging...)
+}
+
+// Response: Những gì Python sẽ trả về cho Node.js
+message PathResponse {
+  repeated Point waypoints = 1; // Danh sách các điểm cần đi qua (Mảng các Point)
+  bool success = 2;             // True nếu tìm thấy đường, False nếu bị kẹt cứng
+  string message = 3;           // Thông báo lỗi nếu có
+}
