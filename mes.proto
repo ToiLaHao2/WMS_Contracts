@@ -30,3 +30,25 @@ message PathResponse {
   bool success = 2;             // True nếu tìm thấy đường, False nếu bị kẹt cứng
   string message = 3;           // Thông báo lỗi nếu có
 }
+
+
+// Dịch vụ cấp phát vị trí (Slot allocation)
+service SlotAllocationService {
+  rpc AllocateSlot (SlotAllocationRequest) returns (SlotAllocationResponse);
+}
+
+// Request: Những gì Node.js sẽ gửi cho Python
+message SlotAllocationRequest {
+  string warehouse_id = 1;
+  string item_id = 2;
+  float length = 3;
+  float width = 4;
+}
+
+// Response: Những gì Python sẽ trả về cho Node.js
+message SlotAllocationResponse {
+  bool success = 1;
+  string slot_id = 2;
+  string message = 3;
+  string error_code = 4;
+}
