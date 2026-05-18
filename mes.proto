@@ -52,3 +52,38 @@ message SlotAllocationResponse {
   string message = 3;
   string error_code = 4;
 }
+
+
+// Dịch vụ điều phối AGV — nối Slot Allocation + Pathfinding thành 1 kế hoạch chạy
+service DispatchService {
+  rpc DispatchAGV (DispatchRequest) returns (DispatchResponse);
+}
+
+// Request: Thông tin cần để MES lập kế hoạch chạy cho AGV
+message DispatchRequest {
+  string warehouse_id = 1;     // ID của kho
+  string inbound_order_id = 2; // ID lệnh nhập (để trace)
+  Point  agv_position = 3;     // Tọa độ hiện tại của AGV được chọn
+  Point  pickup_point = 4;     // Điểm lấy hàng (VD: Cửa kho)
+  Point  slot_position = 5;    // Tọa độ Slot đích cần cất hàng
+}
+
+// Một bước trong kế hoạch di chuyển (để phân biệt gắp hàng / cất hàng)
+enum ActionType {
+  MOVE = 0;      // Di chuyển thuần túy
+  PICK_UP = 1;   // Dừng lại và gắp hàng
+  DROP_OFF = 2;  // Dừng lại và cất hàng
+}
+
+// Một waypoint kèm hành động tại điểm đó
+message WaypointAction {
+  Point      position = 1;
+  ActionType action   = 2;
+}
+
+// Response: Execution Plan đầy đủ cho 1 AGV
+message DispatchResponse {
+  bool                   success    = 1;
+  string                 message    = 2;
+  repeated WaypointAction waypoints = 3; // Danh sách tọa độ + hành động theo thứ tự
+}
