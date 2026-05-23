@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package agv;
+
+option go_package = "github.com/devil/wmss/agv/internal/core/contracts/agv_grpc";
+
+service AGVControlService {
+  rpc ExecutePlan (ExecutePlanRequest) returns (ExecutePlanResponse);
+}
+
+message Coordinate {
+  float x = 1;
+  float y = 2;
+}
+
+message Waypoint {
+  Coordinate position = 1;
+  string action = 2;
+}
+
+message ExecutePlanRequest {
+  string agv_id = 1;
+  string inbound_order_id = 2;
+  string wms_callback_url = 3;
+  repeated Waypoint waypoints = 4;
+}
+
+message ExecutePlanResponse {
+  string status = 1;
+  string agv_id = 2;
+  int32 steps = 3;
+}
