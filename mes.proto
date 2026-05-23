@@ -73,6 +73,7 @@ enum ActionType {
   MOVE = 0;      // Di chuyển thuần túy
   PICK_UP = 1;   // Dừng lại và gắp hàng
   DROP_OFF = 2;  // Dừng lại và cất hàng
+  RETURN = 3;    // Quay về dock (di chuyển không mang hàng)
 }
 
 // Một waypoint kèm hành động tại điểm đó
