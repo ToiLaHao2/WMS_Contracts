@@ -1,6 +1,6 @@
 # WMSS Contracts (gRPC Protobufs)
 
-Kho lưu trữ này đóng vai trò là **"Hợp đồng Giao tiếp" (Single Source of Truth)** cho toàn bộ hệ thống mô phỏng tự động hóa nhà kho đa ngôn ngữ (WMSS). 
+Kho lưu trữ này đóng vai trò là **"Hợp đồng Giao tiếp" (Single Source of Truth)** cho toàn bộ hệ thống mô phỏng tự động hóa nhà kho đa ngôn ngữ (WMSS).
 
 Nó chứa tất cả các tệp định nghĩa Protocol Buffers (`.proto`) dùng để giao tiếp đồng bộ (gRPC) giữa các Microservices.
 
@@ -18,11 +18,12 @@ Trong kiến trúc Polyglot Microservices (sử dụng nhiều ngôn ngữ lập
 
 Kho lưu trữ này định nghĩa các luồng gọi (RPC calls) sau:
 
-- **WMS (Node.js) ↔ MES (Python):** 
+- **WMS (Node.js) ↔ MES (Python):**
+
   - WMS gọi MES để lấy thông tin truy vấn hoặc kết quả mô phỏng (Preview/Query).
   - *Lưu ý:* WMS đẩy lệnh nghiệp vụ chính xuống MES thông qua Kafka (Async), không qua gRPC.
-  
 - **MES (Python) ↔ AGV Control (Golang):**
+
   - MES sau khi tính toán xong gửi **Execution Plan** (Lộ trình, Danh sách tác vụ vật lý) xuống cho tầng Golang thực thi.
   - Golang có thể gọi ngược lại MES để xin tính toán lại đường đi (Re-route) khi gặp vật cản bất ngờ.
 
@@ -33,24 +34,30 @@ Kho lưu trữ này định nghĩa các luồng gọi (RPC calls) sau:
 Kho lưu trữ này được tích hợp vào các dự án chính thông qua lệnh `git submodule`.
 
 ### 1. Dành cho Tầng WMS (Node.js / TypeScript)
+
 Node.js đọc trực tiếp tệp `.proto` lúc runtime thông qua tính năng "Dynamic Loading".
+
 - **Thư viện:** `@grpc/grpc-js`, `@grpc/proto-loader`
 - **Cách dùng:** Không cần biên dịch mã nguồn. Sử dụng `protoLoader.loadSync()` trỏ thẳng đến tệp `.proto` trong thư mục Submodule.
 
 ### 2. Dành cho Tầng MES (Python)
+
 Python cần biên dịch tệp `.proto` thành mã Python tĩnh (Static Generation) để tận dụng tính năng kiểm tra kiểu (Type-checking).
+
 - **Thư viện:** `grpcio`, `grpcio-tools`
 - **Cách dùng:** Chạy lệnh biên dịch sau mỗi lần tệp `.proto` thay đổi:
   ```bash
   python -m grpc_tools.protoc -I./libs/core/contracts/Warehouse_management_simulation_Contracts \
       --python_out=./libs/core/contracts \
       --grpc_python_out=./libs/core/contracts \
-      ./libs/core/contracts/Warehouse_management_simulation_Contracts/mes.proto
+      ./libs/core/contracts/WMS_Contracts/mes.proto
   ```
 - *Mẹo:* Đừng quên chỉnh sửa import path trong tệp `_grpc.py` được sinh ra để fix lỗi đường dẫn tương đối của Python.
 
 ### 3. Dành cho Tầng AGV Control (Golang)
+
 Golang yêu cầu biên dịch mạnh (Strongly-typed Generation).
+
 - **Công cụ:** `protoc`, `protoc-gen-go`, `protoc-gen-go-grpc`
 - **Cách dùng:**
   ```bash
