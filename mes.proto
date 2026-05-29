@@ -66,6 +66,7 @@ message DispatchRequest {
   Point  agv_position = 3;     // Tọa độ hiện tại của AGV được chọn
   Point  pickup_point = 4;     // Điểm lấy hàng (VD: Cửa kho)
   Point  slot_position = 5;    // Tọa độ Slot đích cần cất hàng
+  string agv_id = 6;           // ID của AGV được phân công
 }
 
 // Một bước trong kế hoạch di chuyển (để phân biệt gắp hàng / cất hàng)
