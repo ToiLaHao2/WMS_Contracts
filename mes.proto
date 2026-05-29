@@ -107,4 +107,5 @@ message ReplanRequest {
   string warehouse_id = 2;
   Point current_position = 3;
   repeated WaypointAction milestones = 4; // Các điểm đích tiếp theo (Pickup, Dropoff, Return)
+  repeated Point obstacles = 5;           // Tọa độ vật lý của các AGV đang bị kẹt/đứng im
 }
