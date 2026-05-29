@@ -65,9 +65,9 @@ message FreeSlotResponse {
 }
 
 
-// Dịch vụ điều phối AGV — nối Slot Allocation + Pathfinding thành 1 kế hoạch chạy
 service DispatchService {
   rpc DispatchAGV (DispatchRequest) returns (DispatchResponse);
+  rpc ReplanAGV (ReplanRequest) returns (DispatchResponse); // Reuse DispatchResponse
 }
 
 // Request: Thông tin cần để MES lập kế hoạch chạy cho AGV
@@ -99,4 +99,12 @@ message DispatchResponse {
   bool                   success    = 1;
   string                 message    = 2;
   repeated WaypointAction waypoints = 3; // Danh sách tọa độ + hành động theo thứ tự
+}
+
+// Request: Thông tin yêu cầu tính lại đường khi AGV bị kẹt
+message ReplanRequest {
+  string agv_id = 1;
+  string warehouse_id = 2;
+  Point current_position = 3;
+  repeated WaypointAction milestones = 4; // Các điểm đích tiếp theo (Pickup, Dropoff, Return)
 }

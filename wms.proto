@@ -6,6 +6,7 @@ option go_package = "github.com/devil/wmss/agv/internal/core/contracts/wms_grpc"
 
 service WMSService {
   rpc ReportAGVTaskCompleted (ReportAGVTaskRequest) returns (ReportAGVTaskResponse);
+  rpc RequestReplan (ReplanRequest) returns (ReplanResponse);
 }
 
 message ReportAGVTaskRequest {
@@ -17,4 +18,32 @@ message ReportAGVTaskRequest {
 message ReportAGVTaskResponse {
   bool success = 1;
   string message = 2;
+}
+
+message Coordinate {
+  float x = 1;
+  float y = 2;
+}
+
+message Milestone {
+  Coordinate position = 1;
+  string action = 2;
+}
+
+message ReplanRequest {
+  string agv_id = 1;
+  string warehouse_id = 2;
+  Coordinate current_position = 3;
+  repeated Milestone milestones = 4;
+}
+
+message Waypoint {
+  Coordinate position = 1;
+  string action = 2;
+}
+
+message ReplanResponse {
+  bool success = 1;
+  string message = 2;
+  repeated Waypoint waypoints = 3;
 }
