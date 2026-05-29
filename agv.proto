@@ -23,6 +23,7 @@ message ExecutePlanRequest {
   string inbound_order_id = 2;
   string wms_grpc_url = 3;
   repeated Waypoint waypoints = 4;
+  string warehouse_id = 5;
 }
 
 message ExecutePlanResponse {
