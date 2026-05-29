@@ -35,6 +35,7 @@ message PathResponse {
 // Dịch vụ cấp phát vị trí (Slot allocation)
 service SlotAllocationService {
   rpc AllocateSlot (SlotAllocationRequest) returns (SlotAllocationResponse);
+  rpc FreeSlot (FreeSlotRequest) returns (FreeSlotResponse);
 }
 
 // Request: Dữ liệu yêu cầu cấp phát vị trí
@@ -47,10 +48,20 @@ message SlotAllocationRequest {
 
 // Response: Kết quả cấp phát vị trí từ MES
 message SlotAllocationResponse {
-  bool success = 1;
-  string slot_id = 2;
+  bool   success = 1;
+  string slot_id = 2;          // ID của slot được chọn
   string message = 3;
-  string error_code = 4;
+  string error_code = 4;       // Mã lỗi nếu có
+}
+
+message FreeSlotRequest {
+  string warehouse_id = 1;
+  string slot_id = 2;
+}
+
+message FreeSlotResponse {
+  bool   success = 1;
+  string message = 2;
 }
 
 
