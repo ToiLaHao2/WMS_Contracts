@@ -21,7 +21,7 @@ message Waypoint {
 message ExecutePlanRequest {
   string agv_id = 1;
   string inbound_order_id = 2;
-  string wms_callback_url = 3;
+  string wms_grpc_url = 3;
   repeated Waypoint waypoints = 4;
 }
 

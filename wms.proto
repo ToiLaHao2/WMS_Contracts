@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package wms;
+
+option go_package = "github.com/devil/wmss/agv/internal/core/contracts/wms_grpc";
+
+service WMSService {
+  rpc ReportAGVTaskCompleted (ReportAGVTaskRequest) returns (ReportAGVTaskResponse);
+}
+
+message ReportAGVTaskRequest {
+  string agv_id = 1;
+  string inbound_order_id = 2;
+  string status = 3;
+}
+
+message ReportAGVTaskResponse {
+  bool success = 1;
+  string message = 2;
+}
