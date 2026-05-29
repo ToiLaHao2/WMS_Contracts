@@ -35,6 +35,7 @@ message ReplanRequest {
   string warehouse_id = 2;
   Coordinate current_position = 3;
   repeated Milestone milestones = 4;
+  repeated Coordinate obstacles = 5; // Tọa độ vật lý của các AGV đang bị kẹt/đứng im
 }
 
 message Waypoint {
